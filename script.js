@@ -158,16 +158,16 @@ for (let row = 0; row < 3; row++) {
                     if (result.winner) {
                         text.innerText = result.winner.name + " has won the game!";
                         gameOver = true
+                        SoundOver.play();
                     }
 
                 }
                 if (game.isFull()) {
                     text.innerText = "It's a draw!";
                     gameOver = true
+                    SoundOver.play();
 
                 }
-            } else {
-                SoundOver.play();
             }
 
 
