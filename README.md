@@ -52,14 +52,3 @@ This project was developed as part of [The Odin Project](https://www.theodinproj
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-A modern browser (Chrome, Firefox, Safari, etc.)
-
-### How to Run Locally
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
