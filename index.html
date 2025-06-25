@@ -7,19 +7,30 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div class="wrapper">
-        <div id="0 0">❌</div>
-        <div id="0 1">❌</div>
-        <div id="0 2">⭕</div>
-        <div id="1 0"></div>
-        <div id="1 1"></div>
-        <div id="1 2"></div>
-        <div id="2 0"></div>
-        <div id="2 1"></div>
-        <div id="2 2"></div>
+    <div class="game">
+        <div id="0-0" class="cell right-border down-border"></div>
+        <div id="0-1" class="cell left-border right-border down-border"></div>
+        <div id="0-2" class="cell left-border down-border"></div>
+
+        <div id="1-0" class="cell right-border down-border"></div>
+        <div id="1-1" class="cell left-border right-border down-border"></div>
+        <div id="1-2" class="cell left-border down-border"></div>
+
+        <div id="2-0" class="cell right-border"></div>
+        <div id="2-1" class="cell left-border right-border"></div>
+        <div id="2-2" class="cell left-border"></div>
+    </div>
+    <div class="text-wrapper">
+        <div class="text">Tic Tac Toe!</div>
+        <button class=" again hidden">Play again!</button>
     </div>
 </body>
 

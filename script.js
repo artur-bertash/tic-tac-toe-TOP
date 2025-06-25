@@ -23,7 +23,19 @@ const GameBoard = (function () {
 
         }
     }
-    return { getBoard, printBoard, }
+
+    const eraseBoard = () => {
+        board = []
+
+        for (let row = 0; row < rows; row++) {
+            board.push([])
+            for (let col = 0; col < cols; col++) {
+                board[row].push(Cell())
+            }
+            console.log("\n")
+        }
+    }
+    return { getBoard, printBoard, eraseBoard }
 
 }())
 
@@ -42,8 +54,8 @@ function Cell() {
     return { addToken, getValue }
 }
 
-const GameControl = (function (playerOneName = "Player One",
-    playerTwoName = "Player Two") {
+const GameControl = (function (playerOneName = "Player X",
+    playerTwoName = "Player O") {
 
     const board = GameBoard
     const players = [
@@ -72,12 +84,12 @@ const GameControl = (function (playerOneName = "Player One",
     }
     const isWon = () => {
         for (let row = 0; row < 3; row++) {
-            if (board.getBoard()[row][0].getValue() != 0 && board.getBoard()[row][0].getValue() == board.getBoard()[row][1].getValue() && board.getBoard()[row][1].getValue() == board.getBoard()[row][0].getValue()) {
+            if (board.getBoard()[row][0].getValue() != 0 && board.getBoard()[row][0].getValue() == board.getBoard()[row][1].getValue() && board.getBoard()[row][1].getValue() == board.getBoard()[row][2].getValue()) {
                 return true;
             }
         }
         for (let col = 0; col < 3; col++) {
-            if (board.getBoard()[0][col].getValue() != 0 && board.getBoard()[1][col].getValue() == board.getBoard()[1][col].getValue() && board.getBoard()[1][col].getValue() == board.getBoard()[2][col].getValue()) {
+            if (board.getBoard()[0][col].getValue() != 0 && board.getBoard()[0][col].getValue() == board.getBoard()[1][col].getValue() && board.getBoard()[1][col].getValue() == board.getBoard()[2][col].getValue()) {
                 return true;
             }
         }
@@ -96,20 +108,69 @@ const GameControl = (function (playerOneName = "Player One",
         }
         board.getBoard()[row][col].addToken(activePlayer.token)
 
-        switchPlayer()
+
         if (isWon()) {
             console.log(activePlayer.name + ": Won the game!")
-            return
+            return { winner: activePlayer };
         }
+        switchPlayer()
         printNewRound()
+        return { winner: null }
     }
+    const newGame = () => {
+        board.eraseBoard()
 
+    }
+    const isFull = () => {
+        if (board.getBoard().every(row => row.every(cell => cell.getValue() != 0))) {
+            board.eraseBoard()
+
+            return true
+        }
+        return false
+    }
     printNewRound()
-    return { playRound, getActivePlayer }
+    return { playRound, getActivePlayer, newGame, isFull }
 
 }())
 
 
 const game = GameControl
+const text = document.querySelector(".text")
 
+for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+        const cell = document.getElementById(`${row}-${col}`)
+        cell.addEventListener("click", () => {
+            const player = game.getActivePlayer()
+            const result = game.playRound(row, col)
 
+            if (cell.innerText == "") {
+                const symbol = player.token === 1 ? "❌" : "⭕"
+                cell.innerText = symbol
+                if (result.winner) {
+                    text.innerText = result.winner.name + " has won the game!";
+                }
+            }
+            if (game.isFull()) {
+                kill()
+            }
+
+        })
+    }
+}
+
+function kill() {
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const cell = document.getElementById(`${row}-${col}`)
+            cell.innerText = ""
+        }
+    }
+}
+const playAgainBtn = document.querySelector(".again")
+
+playAgainBtn.addEventListener("click", () => {
+    game.newGame()
+    kill()
+})

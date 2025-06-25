@@ -7,28 +7,79 @@ html {
     background-color: #131212;
     height: 100vh;
     width: auto;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.wrapper {
+* {
     box-sizing: border-box;
+}
+
+.game {
+
     border-radius: 12px;
     background-color: #2c2c2c;
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
     padding: 36px;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+
+
 }
 
 
-.wrapper>* {
-    font-size: 7rem;
+.game>* {
+    font-size: 6rem;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
 
+}
 
+.right-border {
+    border-right: 12px solid rgb(148, 140, 140, 0.4);
+}
+
+.down-border {
+    border-bottom: 12px solid rgb(148, 140, 140, 0.4);
+}
+
+.text-wrapper {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+    color: whitesmoke;
+    font-size: 2rem;
+
+}
+
+.text {
+
+    margin-right: auto;
+}
+
+.again {
+    border-radius: 8px;
+    border: 0.5px grey solid;
+    color: #2c2c2c;
+    font: inherit;
+    font-size: 1rem;
+}
+
+.cell {
+    background-clip: padding-box;
+    border-radius: 4px;
+}
+
+.cell:hover {
+    background-color: rgba(200, 200, 200, 0.15);
 }
