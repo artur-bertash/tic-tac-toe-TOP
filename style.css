@@ -89,3 +89,10 @@ html {
 .again:hover {
     scale: 1.06;
 }
+
+@media (max-width: 480px) {
+    .game>* {
+        font-size: 4rem;
+
+    }
+}
