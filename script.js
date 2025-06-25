@@ -1,3 +1,7 @@
+const SoundClick = new Audio("sound_click.mp3");
+const SoundOver = new Audio("sound_over.mp3");
+
+
 const GameBoard = (function () {
     const rows = 3;
     const cols = 3;
@@ -146,6 +150,7 @@ for (let row = 0; row < 3; row++) {
             if (!gameOver) {
                 const player = game.getActivePlayer()
                 const result = game.playRound(row, col)
+                SoundClick.play();
 
                 if (cell.innerText == "") {
                     const symbol = player.token === 1 ? "❌" : "⭕"
@@ -154,11 +159,15 @@ for (let row = 0; row < 3; row++) {
                         text.innerText = result.winner.name + " has won the game!";
                         gameOver = true
                     }
+
                 }
                 if (game.isFull()) {
+                    text.innerText = "It's a draw!";
                     gameOver = true
-                    kill()
+
                 }
+            } else {
+                SoundOver.play();
             }
 
 
