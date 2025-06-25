@@ -137,24 +137,30 @@ const GameControl = (function (playerOneName = "Player X",
 
 const game = GameControl
 const text = document.querySelector(".text")
+let gameOver = false
 
 for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
         const cell = document.getElementById(`${row}-${col}`)
         cell.addEventListener("click", () => {
-            const player = game.getActivePlayer()
-            const result = game.playRound(row, col)
+            if (!gameOver) {
+                const player = game.getActivePlayer()
+                const result = game.playRound(row, col)
 
-            if (cell.innerText == "") {
-                const symbol = player.token === 1 ? "❌" : "⭕"
-                cell.innerText = symbol
-                if (result.winner) {
-                    text.innerText = result.winner.name + " has won the game!";
+                if (cell.innerText == "") {
+                    const symbol = player.token === 1 ? "❌" : "⭕"
+                    cell.innerText = symbol
+                    if (result.winner) {
+                        text.innerText = result.winner.name + " has won the game!";
+                        gameOver = true
+                    }
+                }
+                if (game.isFull()) {
+                    gameOver = true
+                    kill()
                 }
             }
-            if (game.isFull()) {
-                kill()
-            }
+
 
         })
     }
@@ -173,4 +179,5 @@ const playAgainBtn = document.querySelector(".again")
 playAgainBtn.addEventListener("click", () => {
     game.newGame()
     kill()
+    gameOver = false
 })
