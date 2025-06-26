@@ -2,91 +2,104 @@ const SoundClick = new Audio("sound_click.mp3");
 const SoundOver = new Audio("sound_over.mp3");
 
 
-const GameBoard = (function () {
-    const rows = 3;
-    const cols = 3;
-    let board = []
+class GameBoard {
 
-    for (let row = 0; row < rows; row++) {
-        board.push([])
-        for (let col = 0; col < cols; col++) {
-            board[row].push(Cell())
-        }
-        console.log("\n")
+    constructor() {
+        this.rows = 3;
+        this.cols = 3;
+        this.board = []
+        this.#initBoard();
     }
 
-    const getBoard = () => board;
+    #initBoard() {
+        this.board = []
+        for (let row = 0; row < this.rows; row++) {
+            this.board.push([])
+            for (let col = 0; col < this.cols; col++) {
+                this.board[row].push(new Cell())
+            }
+            console.log("\n")
+        }
 
-    const printBoard = () => {
-        for (let row = 0; row < rows; row++) {
+    }
+
+    getBoard = () => this.board;
+
+    printBoard = () => {
+        for (let row = 0; row < this.rows; row++) {
             let rowStr = ""
-            for (let col = 0; col < cols; col++) {
-                rowStr += board[row][col].getValue()
+            for (let col = 0; col < this.cols; col++) {
+                rowStr += this.board[row][col].getValue()
             }
             console.log(rowStr)
 
         }
     }
 
-    const eraseBoard = () => {
-        board = []
-
-        for (let row = 0; row < rows; row++) {
-            board.push([])
-            for (let col = 0; col < cols; col++) {
-                board[row].push(Cell())
-            }
-            console.log("\n")
-        }
-    }
-    return { getBoard, printBoard, eraseBoard }
-
-}())
-
-
-
-function Cell() {
-    let value = 0;
-
-    const addToken = (player) => {
-        value = player
+    eraseBoard = () => {
+        console.log(this.board)
+        this.#initBoard()
     }
 
-    const getValue = () => {
-        return value
-    }
-    return { addToken, getValue }
+
 }
 
-const GameControl = (function (playerOneName = "Player X",
-    playerTwoName = "Player O") {
 
-    const board = GameBoard
-    const players = [
-        {
-            name: playerOneName,
-            token: 1
-        },
-        {
-            name: playerTwoName,
-            token: 2
-        }
-    ]
 
-    let activePlayer = players[0]
-
-    const getActivePlayer = () => activePlayer;
-
-    const switchPlayer = () => {
-
-        activePlayer = activePlayer === players[0] ? players[1] : players[0]
+class Cell {
+    #value;
+    constructor() {
+        this.#value = 0
     }
 
-    const printNewRound = () => {
-        board.printBoard()
-        console.log(activePlayer.name + "'s turn!")
+
+    addToken = (player) => {
+        this.#value = player
     }
-    const isWon = () => {
+
+    getValue = () => {
+        return this.#value
+    }
+
+}
+
+class GameControl {
+    #board;
+    #players;
+    #activePlayer;
+
+    constructor(playerOneName = "Player X", playerTwoName = "Player O") {
+        this.#board = new GameBoard()
+        this.#players = [
+            {
+                name: playerOneName,
+                token: 1
+            },
+            {
+                name: playerTwoName,
+                token: 2
+            }
+        ]
+        this.#activePlayer = this.#players[0]
+
+    }
+
+
+
+
+    getActivePlayer = () => this.#activePlayer;
+
+    switchPlayer = () => {
+
+        this.#activePlayer = this.#activePlayer === this.#players[0] ? this.#players[1] : this.#players[0]
+    }
+
+    printNewRound = () => {
+        this.#board.printBoard()
+        console.log(this.#activePlayer.name + "'s turn!")
+    }
+    isWon = () => {
+        const board = this.#board
         for (let row = 0; row < 3; row++) {
             if (board.getBoard()[row][0].getValue() != 0 && board.getBoard()[row][0].getValue() == board.getBoard()[row][1].getValue() && board.getBoard()[row][1].getValue() == board.getBoard()[row][2].getValue()) {
                 return true;
@@ -105,41 +118,45 @@ const GameControl = (function (playerOneName = "Player X",
             return true;
         }
     }
-    const playRound = (row, col) => {
+
+    playRound = (row, col) => {
+        const board = this.#board
         if (board.getBoard()[row][col].getValue() !== 0) {
             console.log("Can't move there")
-            return
+            return { winner: null };
         }
-        board.getBoard()[row][col].addToken(activePlayer.token)
+        board.getBoard()[row][col].addToken(this.#activePlayer.token)
 
 
-        if (isWon()) {
-            console.log(activePlayer.name + ": Won the game!")
-            return { winner: activePlayer };
+        if (this.isWon()) {
+            console.log(this.#activePlayer.name + ": Won the game!")
+            return { winner: this.#activePlayer };
         }
-        switchPlayer()
-        printNewRound()
+        this.switchPlayer()
+        this.printNewRound()
         return { winner: null }
     }
-    const newGame = () => {
-        board.eraseBoard()
+    newGame = () => {
+        this.#board.eraseBoard()
+        this.#activePlayer = this.#players[0]
 
     }
-    const isFull = () => {
-        if (board.getBoard().every(row => row.every(cell => cell.getValue() != 0))) {
-            board.eraseBoard()
+    isFull = () => {
+        if (this.#board.getBoard().every(row => row.every(cell => cell.getValue() != 0))) {
+
 
             return true
         }
         return false
     }
-    printNewRound()
-    return { playRound, getActivePlayer, newGame, isFull }
-
-}())
 
 
-const game = GameControl
+
+
+}
+
+
+const game = new GameControl()
 const text = document.querySelector(".text")
 let gameOver = false
 
@@ -188,5 +205,6 @@ const playAgainBtn = document.querySelector(".again")
 playAgainBtn.addEventListener("click", () => {
     game.newGame()
     kill()
+
     gameOver = false
 })
