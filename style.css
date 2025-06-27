@@ -79,8 +79,25 @@ html {
 
 .cell {
     background-clip: padding-box;
-    border-radius: 4px;
+
 }
+
+#cell-0-0 {
+    border-top-left-radius: 8px;
+}
+
+#cell-0-2 {
+    border-top-right-radius: 8px;
+}
+
+#cell-2-0 {
+    border-bottom-left-radius: 8px;
+}
+
+#cell-2-2 {
+    border-bottom-right-radius: 8px;
+}
+
 
 .cell:hover {
     background-color: rgba(200, 200, 200, 0.15);
