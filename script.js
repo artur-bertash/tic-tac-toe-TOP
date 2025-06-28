@@ -162,7 +162,8 @@ let gameOver = false
 
 for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
-        const cell = document.getElementById(`${row}-${col}`)
+        const cell = document.getElementById(`cell-${row}-${col}`);
+
         cell.addEventListener("click", () => {
             if (!gameOver) {
                 const player = game.getActivePlayer()
@@ -195,7 +196,7 @@ for (let row = 0; row < 3; row++) {
 function kill() {
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++) {
-            const cell = document.getElementById(`${row}-${col}`)
+            const cell = document.getElementById(`cell-${row}-${col}`);
             cell.innerText = ""
         }
     }
